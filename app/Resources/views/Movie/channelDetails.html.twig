@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Kategorie{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <div class="container">
+
+            {% for movie in channel.movies %}
+                <a href="{{ path('movie_details', {'id': movie.id}) }}">
+                    <img src="{{ movie.thumbnail }}" />
+                    {{ movie.name }}
+                </a>
+            {% endfor %}
+
+        </div>
+    </div>
+{% endblock %}
+
+{#{% block javascripts %}#}
+    {#{{ parent() }}#}
+{#{% endblock %}#}

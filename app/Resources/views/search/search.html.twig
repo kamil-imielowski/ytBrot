@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{#{% block title %}{{ name }}{% endblock %}#}
+
+{% block body %}
+    <div class="content">
+        <div class="container">
+
+            <h1>Wyniki wyszukania dla: </h1>
+
+            {{ dump() }}
+
+        </div>
+    </div>
+{% endblock %}
+
+{#{% block javascripts %}#}
+    {#{{ parent() }}#}
+{#{% endblock %}#}

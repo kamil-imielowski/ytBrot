@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{#{% block title %}{{ name }}{% endblock %}#}
+
+{% block body %}
+    <div class="content">
+        <div class="container">
+
+            <a href="{{ path('cron_build_page') }}">cron</a>
+
+        </div>
+    </div>
+{% endblock %}
+
+{#{% block javascripts %}#}
+    {#{{ parent() }}#}
+{#{% endblock %}#}

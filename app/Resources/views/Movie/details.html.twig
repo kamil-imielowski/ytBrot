@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ movie.name }}{% endblock %}
+
+{% block body %}
+    <div class="content has-sidebar">
+        <div class="container">
+
+            {#{% include 'Advertising/place_1.html.twig' %}#}
+
+            {{ ad.content | raw }}
+
+            <h1>{{ movie.name }}</h1>
+
+            <iframe width="854" height="480" src="{{ movie.link}}" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+
+            {{ ad2.content | raw }}
+
+            <p>{{ movie.description }}</p>
+            {{ form_start(deleteForm, {"attr": {"class": "pull-left"}}) }}
+                {{ form_widget(deleteForm.submit, {"attr": {"class": "btn-danger"}}) }}
+                {{ form_rest(deleteForm) }}
+            {{ form_end(deleteForm) }}
+
+        </div>
+    </div>
+{% endblock %}
+
+{#{% block javascripts %}#}
+    {#{{ parent() }}#}
+{#{% endblock %}#}

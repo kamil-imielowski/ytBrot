@@ -10,7 +10,7 @@ parameters:
 
 framework:
     #esi: ~
-    #translator: { fallbacks: ['%locale%'] }
+    translator: { fallbacks: ['%locale%'] }
     secret: '%secret%'
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
@@ -46,17 +46,17 @@ doctrine:
         user: '%database_user%'
         password: '%database_password%'
         charset: UTF8
-        # if using pdo_sqlite as your database driver:
-        #   1. add the path in parameters.yml
-        #     e.g. database_path: '%kernel.project_dir%/var/data/data.sqlite'
-        #   2. Uncomment database_path in parameters.yml.dist
-        #   3. Uncomment next line:
-        #path: '%database_path%'
 
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+
+stof_doctrine_extensions:
+    default_locale: pl_PL
+    orm:
+        default:
+            timestampable: true # not needed: listeners are not enabled by default
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -65,3 +65,43 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+# Easy Admin Configuration
+easy_admin:
+    entities:
+
+        Movie:
+            class: AppBundle\Entity\Movie
+            list:
+                fields: ['id', 'name', 'channel.name', 'views', 'createdAt', 'updatedAt']
+            form:
+              fields:
+                - 'name'
+                - 'link'
+                - { property: 'description', type_options:{empty_data: ""}}
+                - { property: 'channel', label: 'Channel', type: 'Symfony\Bridge\Doctrine\Form\Type\EntityType', type_options: {class: AppBundle\Entity\Channel, choice_label: 'name', required: false, empty_data: null}}
+
+        Channels:
+            class: AppBundle\Entity\Channel
+            form:  # <-- 'form' is applied to both 'new' and 'edit' views
+                fields:
+                  - 'name'
+                  - 'description'
+#                  - { property: 'movies', label: 'Movies', type: 'collection', type_options: { entry_type: 'AppBundle\Form\MovieType', by_reference: false } }
+
+        Advertising:
+            class: AppBundle\Entity\Advertising
+            form:
+              fields:
+                - {property: 'name', label: 'Nazwa'}
+                - {property: 'place', label: 'Miejsce wyświetlania', type: 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', type_options: {choices: {miejsce1: 1, miejsce2: 2, miejsce3: 3, miejsce4: 4}}}
+                - {property: 'code', label: 'Kod'}
+                - {property: 'expireAt', label: 'Ważne do:'}
+
+    site_name: 'Panel administracyjny'
+    design:
+        brand_color: '#1ABC9C'
+        assets:
+          favicon: 'images/favicon.png'
+          js:
+            - 'js/easyadminbundle.js'
