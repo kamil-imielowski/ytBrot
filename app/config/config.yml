@@ -70,17 +70,6 @@ swiftmailer:
 easy_admin:
     entities:
 
-        Movie:
-            class: AppBundle\Entity\Movie
-            list:
-                fields: ['id', 'name', 'channel.name', 'views', 'createdAt', 'updatedAt']
-            form:
-              fields:
-                - 'name'
-                - 'link'
-                - { property: 'description', type_options:{empty_data: ""}}
-                - { property: 'channel', label: 'Channel', type: 'Symfony\Bridge\Doctrine\Form\Type\EntityType', type_options: {class: AppBundle\Entity\Channel, choice_label: 'name', required: false, empty_data: null}}
-
         Channels:
             class: AppBundle\Entity\Channel
             form:  # <-- 'form' is applied to both 'new' and 'edit' views
@@ -97,6 +86,17 @@ easy_admin:
                 - {property: 'place', label: 'Miejsce wyświetlania', type: 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', type_options: {choices: {miejsce1: 1, miejsce2: 2, miejsce3: 3, miejsce4: 4}}}
                 - {property: 'code', label: 'Kod'}
                 - {property: 'expireAt', label: 'Ważne do:'}
+
+        Movie:
+            class: AppBundle\Entity\Movie
+            list:
+                fields: ['id', 'name', 'channel.name', 'views', 'createdAt', 'updatedAt']
+            form:
+              fields:
+                - 'name'
+                - 'link'
+                - { property: 'description', type_options:{empty_data: ""}}
+                - { property: 'channel', label: 'Channel', type: 'Symfony\Bridge\Doctrine\Form\Type\EntityType', type_options: {class: AppBundle\Entity\Channel, choice_label: 'name', required: false, empty_data: null}}
 
     site_name: 'Panel administracyjny'
     design:

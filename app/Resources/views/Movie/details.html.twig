@@ -6,8 +6,6 @@
     <div class="content has-sidebar">
         <div class="container">
 
-            {#{% include 'Advertising/place_1.html.twig' %}#}
-
             {{ ad.content | raw }}
 
             <h1>{{ movie.name }}</h1>
@@ -16,11 +14,11 @@
 
             {{ ad2.content | raw }}
 
+            <a href="{{ path("channel_movies", {"name":movie.channel.name}) }}">
+                <h4>{{ movie.channel.name }}</h4>
+            </a>
+
             <p>{{ movie.description }}</p>
-            {{ form_start(deleteForm, {"attr": {"class": "pull-left"}}) }}
-                {{ form_widget(deleteForm.submit, {"attr": {"class": "btn-danger"}}) }}
-                {{ form_rest(deleteForm) }}
-            {{ form_end(deleteForm) }}
 
         </div>
     </div>

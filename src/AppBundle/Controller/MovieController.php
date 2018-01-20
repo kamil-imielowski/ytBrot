@@ -45,7 +45,7 @@ class MovieController extends Controller
      */
     public function newAction(){
         $entityMenager = $this->getDoctrine()->getManager();
-        $movies = $entityMenager->getRepository(Movie::class)->findAll();
+        $movies = $entityMenager->getRepository(Movie::class)->getLastMovies(15);
 
         return $this->render('Movie/new_movies.html.twig', ["movies" => $movies]);
     }

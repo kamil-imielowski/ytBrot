@@ -34,19 +34,25 @@ class PageBuildController extends Controller
         $channels = $entityMenager->getRepository(Channel::class)->findAll();
 
         foreach ($channels as $channel) {
-            $channelId = $this->searchChannelIdByName($service, 'snippet', array('maxResults' => 1, 'q' => $channel->getName(), 'type' => 'channel'));
+            $channelId = $this->searchChannelIdByName($service, 'snippet', array('maxResults' => 1, 'q' => $channel->getName(), 'type' => 'channel'), $channel);
             $this->searchListByKeyword($service, 'snippet', array('maxResults' => 25, 'order' => "date", 'channelId' => $channelId, 'type' => 'video'), $channel);
         }
 
         return new Response(200);
     }
 
-    private function searchChannelIdByName($service, $part, $params){
+    private function searchChannelIdByName($service, $part, $params, Channel $channel){
         $params = array_filter($params);
         $response = $service->search->listSearch(
             $part,
             $params
         );
+
+        $channel->setDescription($response['items'][0]['snippet']['description'])
+            ->setThumbnail($response['items'][0]['snippet']['thumbnails']['default']['url']);
+        $entityMenager = $this->getDoctrine()->getManager();
+        $entityMenager->persist($channel); // ma zapisac obiekt
+        $entityMenager->flush(); // wykonanie sql
 
         return $response['items'][0]['id']['channelId'];
     }
@@ -62,8 +68,7 @@ class PageBuildController extends Controller
         foreach($channel->getMovies() as $movie){
             $links[] = $movie->getLink();
         }
-        echo "<pre>";
-        //print_r($response);
+
         foreach($response['items'] as $item){
             if(!in_array("https://www.youtube.com/embed/".$item['id']['videoId'], $links)){
                 $movie = new Movie();
@@ -75,13 +80,7 @@ class PageBuildController extends Controller
                 $entityMenager = $this->getDoctrine()->getManager();
                 $entityMenager->persist($movie); // ma zapisac obiekt
                 $entityMenager->flush(); // wykonanie sql
-            }else{
-                echo $item['id']['videoId']."<br>";
-                echo $item['snippet']['description']."<br>";
-                echo $item['snippet']['title']."<br>";
-                echo $item['snippet']['thumbnails']['default']['url']."<br><br>";
             }
         }
-        echo "<pre>";
     }
 }

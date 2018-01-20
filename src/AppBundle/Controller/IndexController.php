@@ -9,6 +9,7 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\Entity\Movie;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -17,9 +18,13 @@ class IndexController extends Controller
 
     /**
      * @Route("/", name="app_index")
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(){
-        return $this->render('index/index.html.twig');
+        $entityMenager = $this->getDoctrine()->getManager();
+        $movies = $entityMenager->getRepository(Movie::class)->getLastMovies(15);
+
+        return $this->render('index/index.html.twig', ["movies" => $movies]);
     }
 
 }

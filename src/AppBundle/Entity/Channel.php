@@ -38,6 +38,13 @@ class Channel
     private $description;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="thumbnail", type="text")
+     */
+    private $thumbnail;
+
+    /**
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Movie", mappedBy="channel", orphanRemoval=true)
@@ -148,6 +155,30 @@ class Channel
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set thumbnail
+     *
+     * @param string $thumbnail
+     *
+     * @return Channel
+     */
+    public function setThumbnail($thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
+
+        return $this;
+    }
+
+    /**
+     * Get thumbnail
+     *
+     * @return string
+     */
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
     }
 
     /**

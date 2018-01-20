@@ -6,7 +6,23 @@
     <div class="content">
         <div class="container">
 
-            <a href="{{ path('cron_build_page') }}">cron</a>
+            {% for movie in movies %}
+                <div class="box">
+                    <a href="{{ path('movie_details', {"id":movie.id}) }}">
+                        <img src="{{ movie.thumbnail }}">
+                        <div class="text">
+                            <h6 class="xs-txt">{{ movie.name }}</h6>
+                            <p>{{ movie.channel.name }}</p>
+                            <p>{{ movie.description }}</p>
+                        </div>
+                    </a>
+                </div>
+                <hr>
+            {% else %}
+                <div>
+                    Brak filmów
+                </div>
+            {% endfor %}
 
         </div>
     </div>

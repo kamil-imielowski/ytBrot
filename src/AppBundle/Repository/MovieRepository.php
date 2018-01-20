@@ -10,4 +10,9 @@ namespace AppBundle\Repository;
  */
 class MovieRepository extends \Doctrine\ORM\EntityRepository
 {
+    function getLastMovies($limit) {
+        return $this->createQueryBuilder('e')->
+        orderBy('e.createdAt', 'DESC')->
+        setMaxResults($limit)->getQuery()->getResult();
+    }
 }
