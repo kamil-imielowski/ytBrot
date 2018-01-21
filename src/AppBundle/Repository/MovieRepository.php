@@ -15,4 +15,11 @@ class MovieRepository extends \Doctrine\ORM\EntityRepository
         orderBy('e.createdAt', 'DESC')->
         setMaxResults($limit)->getQuery()->getResult();
     }
+
+    function findByNameLike($query) {
+        return $this->createQueryBuilder('m')
+            ->where("m.name LIKE '%$query%'")
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -6,14 +6,46 @@
     <div class="content">
         <div class="container">
 
-            <h1>Wyniki wyszukania dla: </h1>
+            <h1>Wyniki wyszukania dla: {{ query }}</h1>
 
-            {{ dump() }}
+            <div id="easyPaginate">
+                {#kanały#}
+                {% for channel in reults['channels'] %}
+                    <div class="paginateElement">
+                        <a href="{{ path("channel_movies", {"name":channel.name}) }}">
+                            <img src="{{ channel.thumbnail }}">
+                            {{ channel.name }}
+                        </a>
+                        <p>{{ channel.description }}</p>
+                    </div>
+                {% endfor %}
+                {#end kanały#}
+
+                {#filmy#}
+                {% for movie in reults['movies'] %}
+                    <div class="paginateElement">
+                        <a href="{{ path('movie_details', {'id': movie.id}) }}">
+                            <img src="{{ movie.thumbnail }}" />
+                            {{ movie.name }}
+                        </a>
+                        <p> {{ movie.description }} </p>
+                    </div>
+                {% endfor %}
+                {#end filmy#}
+            </div>
 
         </div>
     </div>
 {% endblock %}
 
-{#{% block javascripts %}#}
-    {#{{ parent() }}#}
-{#{% endblock %}#}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/jquery.easyPaginate.js') }}"></script>
+    <script>
+        $('#easyPaginate').easyPaginate({
+            paginateElement: '.paginateElement',
+            elementsPerPage: 8,
+            effect: 'climb'
+        });
+    </script>
+{% endblock %}

@@ -33,14 +33,14 @@ class Channel
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="thumbnail", type="text")
+     * @ORM\Column(name="thumbnail", type="text", nullable=true)
      */
     private $thumbnail;
 

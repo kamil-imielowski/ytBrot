@@ -75,7 +75,7 @@ easy_admin:
             form:  # <-- 'form' is applied to both 'new' and 'edit' views
                 fields:
                   - 'name'
-                  - 'description'
+                  - { property: 'description', type_options:{required: false}}
 #                  - { property: 'movies', label: 'Movies', type: 'collection', type_options: { entry_type: 'AppBundle\Form\MovieType', by_reference: false } }
 
         Advertising:
