@@ -64,6 +64,13 @@ class Movie
     private $description;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="fullDescription", type="text")
+     */
+    private $fullDescription;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="createdAt", type="datetime")
@@ -123,6 +130,21 @@ class Movie
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Get urlName
+     *
+     * @return string
+     */
+    public function getUrlName() {
+        $url = $this->getName();
+        $url = preg_replace('~[^\\pL0-9_]+~u', '-', $url);
+        $url = trim($url, "-");
+        $url = iconv("utf-8", "us-ascii//TRANSLIT", $url);
+        $url = strtolower($url);
+        $url = preg_replace('~[^-a-z0-9_]+~', '', $url);
+        return $url;
     }
 
     /**
@@ -211,6 +233,29 @@ class Movie
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set fullDescription
+     *
+     * @param string $fullDescription
+     *
+     * @return Movie
+     */
+    public function setFullDescription($fullDescription){
+        $this->fullDescription = $fullDescription;
+
+        return $this;
+    }
+
+    /**
+     * Get fullDescription
+     *
+     * @return string
+     */
+    public function getFullDescription()
+    {
+        return $this->fullDescription;
     }
 
     /**

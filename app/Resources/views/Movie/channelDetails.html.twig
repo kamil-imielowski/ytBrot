@@ -6,21 +6,30 @@
     <div class="content">
         <div class="container">
 
-            <h1>Filmy kanału {{ channel.name }}</h1>
+            <div class="news section">
+                <h3 class="section-heading">
+                    Filmy kanału {{ channel.name }}
+                </h3>
 
-            <div id="easyPaginate">
-                {% for movie in channel.movies %}
-                    <div class="paginateElement">
-                        <a href="{{ path('movie_details', {'id': movie.id}) }}">
-                            <img src="{{ movie.thumbnail }}" />
-                            {{ movie.name }}
-                        </a>
-                        <p> {{ movie.description }} </p>
-                    </div>
-                {% endfor %}
+                <div id="easyPaginate" class="wrapper">
+                    {% for movie in channel.movies %}
+                    
+                    <div class="item cartoon maxWidth paginateElement">
+                        <div class="photo" style="background-image:url('{{ movie.thumbnail }}');">
+                        </div>
+                        <div class="text ltest-txt">
+                            <h4>
+                                <a href="{{ path('movie_details', {"id":movie.id, "title":movie.urlName}) }}">{{ movie.name }}</a>
+                            </h4>
+                            <p class="xs-txt date">{{ movie.channel.name }}</p>
+                            <p>{{ movie.description }}</p>
+                            <a href="{{ path('movie_details', {"id":movie.id, "title":movie.urlName}) }}"><span>Oglądaj</span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                        </div> 
+                      </div>
+                    {% endfor %}
+                    
+                </div>
             </div>
-
-
         </div>
     </div>
 {% endblock %}

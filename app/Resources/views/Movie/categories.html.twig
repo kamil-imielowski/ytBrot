@@ -5,18 +5,30 @@
 {% block body %}
     <div class="content">
         <div class="container">
+            
+            <div class="shop section">
+                <div class="wrapper">
 
-            {% for channel in channels %}
-                <a href="{{ path("channel_movies", {"name":channel.name}) }}">
-                    <img src="{{ channel.thumbnail }}">
-                    {{ channel.name }}
-                </a>
-                <p>{{ channel.description }}</p>
-            {% else %}
-                <div>
-                    Brak filmów
+                    {% for channel in channels %}
+                        <div class="item">
+                            <div class="photo" style="height:auto; width:100%; background: none;">
+                                <a href="{{ path("channel_movies", {"name":channel.name}) }}">
+                                    <img src="{{ channel.thumbnail }}">
+                                </a>
+                            </div>
+                            <div class="text">
+                                <p><a href="{{ path("channel_movies", {"name":channel.name}) }}">{{ channel.name }}</a></p>
+                                <p class="xs-txt">{{ channel.description }}</p>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div>
+                            Brak filmów
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            
+            </div>
 
         </div>
     </div>

@@ -16,6 +16,15 @@ class MovieRepository extends \Doctrine\ORM\EntityRepository
         setMaxResults($limit)->getQuery()->getResult();
     }
 
+    public function getLastMoviesChannel($limit, $channelId, $movieID = 0){
+        return $this->createQueryBuilder('m')
+            ->where("m.channel = $channelId")
+            ->andWhere("m.id != $movieID")
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
     function findByNameLike($query) {
         return $this->createQueryBuilder('m')
             ->where("m.name LIKE '%$query%'")

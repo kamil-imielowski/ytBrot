@@ -98,6 +98,16 @@ easy_admin:
                 - { property: 'description', type_options:{empty_data: ""}}
                 - { property: 'channel', label: 'Channel', type: 'Symfony\Bridge\Doctrine\Form\Type\EntityType', type_options: {class: AppBundle\Entity\Channel, choice_label: 'name', required: false, empty_data: null}}
 
+        Settings:
+          class: AppBundle\Entity\Settings
+          list:
+              fields: ['description', 'value']
+          disabled_actions: ['new', 'delete']
+          form:
+            fields:
+                - 'description'
+                - 'value'
+
     site_name: 'Panel administracyjny'
     design:
         brand_color: '#1ABC9C'

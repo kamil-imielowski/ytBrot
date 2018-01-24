@@ -71,9 +71,12 @@ class PageBuildController extends Controller
 
         foreach($response['items'] as $item){
             if(!in_array("https://www.youtube.com/embed/".$item['id']['videoId'], $links)){
+                //wyszukanie filmu po id po full opis
+                $this->videosListById($service,'snippet',array('id' => $item['id']['videoId']));
                 $movie = new Movie();
                 $movie->setChannel($channel);
                 $movie->setDescription($item['snippet']['description']);
+                $movie->setFullDescription($this->videosListById($service,'snippet',array('id' => $item['id']['videoId'])));
                 $movie->setLink("https://www.youtube.com/embed/".$item['id']['videoId']);
                 $movie->setThumbnail($item['snippet']['thumbnails']['default']['url']);
                 $movie->setName($item['snippet']['title']);
@@ -82,5 +85,15 @@ class PageBuildController extends Controller
                 $entityMenager->flush(); // wykonanie sql
             }
         }
+    }
+
+    private function videosListById($service, $part, $params) {
+        $params = array_filter($params);
+        $response = $service->videos->listVideos(
+            $part,
+            $params
+        );
+
+        return $response['items'][0]['snippet']['description'];
     }
 }

@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Channel;
 use AppBundle\Entity\Movie;
+use AppBundle\Entity\Settings;
 use AppBundle\Form\MovieType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -52,7 +53,7 @@ class MovieController extends Controller
 
 
     /**
-     * @Route("/{id}/film", name="movie_details")
+     * @Route("film/{id}/{title}", name="movie_details")
      * @param Movie $movie
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -67,13 +68,15 @@ class MovieController extends Controller
         $entityMenager->persist($movie); // ma zapisac obiekt
         $entityMenager->flush(); // wykonanie sql
 
-        $deleteForm = $this->createFormBuilder()
-            ->setAction($this->generateUrl("movie_delete", ["id" => $movie->getId()]))
-            ->setMethod(Request::METHOD_DELETE)
-            ->add("submit", SubmitType::class, ["label" => "usuń"])
-            ->getForm();
+        //$customizeMovies = $entityMenager->getRepository(Movie::class)->getLastMoviesChannel(5, $movie->getChannel()->getId(), $movie->getId());
+        $customizeMovies = $this->customizeMovies();
 
-        return $this->render("Movie/details.html.twig", ["movie" => $movie, "deleteForm" => $deleteForm->createView(), "ad" => $advertising_pl2, 'ad2' => $advertising_pl1]);
+        return $this->render("Movie/details.html.twig", [
+            "movie" => $movie,
+            "ad" => $advertising_pl2,
+            'ad2' => $advertising_pl1,
+            'aboveMovies' => $customizeMovies['above'],
+            'underMovies' => $customizeMovies['under']]);
     }
 
 
@@ -134,5 +137,34 @@ class MovieController extends Controller
         $entityMenager->flush();
 
         return $this->redirectToRoute("app_new_movies");
+    }
+
+    private function customizeMovies(){
+        $em = $this->getDoctrine()->getManager();
+
+        $movies = array();
+
+        $aboveLogin = $em->getRepository(Settings::class)->findOneBy(['valKey' => 'above_ytPlayer']);
+        $underLogin = $em->getRepository(Settings::class)->findOneBy(['valKey' => 'under_ytPlayer']);
+
+        $channel = $em->getRepository(Channel::class)->findOneBy(["name" => $aboveLogin->getValue()]);
+
+        if(!empty($channel)) {
+            $resultmovies = $em->getRepository(Movie::class)->getLastMoviesChannel(5, $channel->getId());
+            $movies['above'] = $resultmovies;
+        }else{
+            $movies['above'] = null;
+        }
+
+        $channelUnder = $em->getRepository(Channel::class)->findOneBy(["name" => $underLogin->getValue()]);
+        if(!empty($channelUnder)) {
+            $resultmovies = $em->getRepository(Movie::class)->getLastMoviesChannel(5, $channelUnder->getId());
+            $movies['under'] = $resultmovies;
+        }else{
+            $movies['under'] = null;
+        }
+
+        return $movies;
+
     }
 }

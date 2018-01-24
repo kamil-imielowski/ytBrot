@@ -6,24 +6,69 @@
     <div class="content has-sidebar">
         <div class="container">
 
+            <div class="shop section">
+                <h2 class="white-txt">Polecamy:</h2>
+                <div class="wrapper">
+                    {% for lmovie in aboveMovies %}
+                        <div class="item">
+                            <div class="photo" style="height:auto; width:100%; background: none;">
+                                <a href="{{ path('movie_details', {"id":lmovie.id, "title":lmovie.urlName}) }}">
+                                    <img src="{{ lmovie.thumbnail }}">
+                                </a>
+                            </div>
+                            <div class="text">
+                                <p><a href="{{ path('movie_details', {"id":lmovie.id, "title":lmovie.urlName}) }}">{{ lmovie.name }}</a></p>
+                                <p class="xs-txt">{{ lmovie.description }}</p>
+                                <p class="xs-txt"><a href="{{ path('channel_movies', {'name':lmovie.channel.name}) }}">{{ lmovie.channel.name }}</a></p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
             {{ ad.content | raw }}
-
+            
             <h1>{{ movie.name }}</h1>
-
-            <iframe width="854" height="480" src="{{ movie.link}}" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
-
+            
             {{ ad2.content | raw }}
+            
+            <div class="main-part">
 
-            <a href="{{ path("channel_movies", {"name":movie.channel.name}) }}">
-                <h4>{{ movie.channel.name }}</h4>
-            </a>
+                <iframe width="854" height="480" style="max-width:100%;" src="{{ movie.link}}" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
 
-            <p>{{ movie.description }}</p>
+                <h4><a href="{{ path("channel_movies", {"name":movie.channel.name}) }}">
+                    {{ movie.channel.name }}
+                </a></h4>
+
+                <p>{{ movie.fullDescription }}</p>
+            </div>
+
+            {% if underMovies is not empty %}
+            <div class="shop section">
+                <h2 class="white-txt">Polecamy również:</h2>
+                <div class="wrapper">
+                    {% for lmovie in underMovies %}
+                        <div class="item">
+                            <div class="photo" style="height:auto; width:100%; background: none;">
+                                <a href="{{ path('movie_details', {"id":lmovie.id, "title":lmovie.urlName}) }}">
+                                    <img src="{{ lmovie.thumbnail }}">
+                                </a>
+                            </div>
+                            <div class="text">
+                                <p><a href="{{ path('movie_details', {"id":lmovie.id, "title":lmovie.urlName}) }}">{{ lmovie.name }}</a></p>
+                                <p class="xs-txt">{{ lmovie.description }}</p>
+                                <p class="xs-txt"><a href="{{ path('channel_movies', {'name':lmovie.channel.name}) }}">{{ lmovie.channel.name }}</a></p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
 
         </div>
     </div>
 {% endblock %}
 
-{#{% block javascripts %}#}
-    {#{{ parent() }}#}
-{#{% endblock %}#}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
